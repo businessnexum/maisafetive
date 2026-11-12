@@ -1,0 +1,9 @@
+{
+  "name": "torra-cafe-demo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": { "dev": "node server.mjs", "build": "node build.mjs", "preview": "node server.mjs dist" },
+  "dependencies": {},
+  "devDependencies": {}
+}

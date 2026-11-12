@@ -1,0 +1,7 @@
+:root{
+  --ink:#101d35;--surface:#172443;--line:#e5e0d5;--text:#fffdf8;--muted:#687080;
+  --cream:#f6f3eb;--cream-ink:#101d35;--cream-muted:#687080;--cream-line:#e5e0d5;
+  --kraft:#f1e9da;--olive:#718044;--sage:#e9ecdf;--copper:#c7a86a;--copper-deep:#718044;
+  --sans:'Geist Variable',Geist,Arial,sans-serif;--serif:'Playfair Display Variable','Playfair Display',Georgia,serif;--mono:'Geist Mono Variable','Geist Mono',monospace;
+  --ease-out:cubic-bezier(.12,.75,.22,1);--ease-in:cubic-bezier(.6,0,.86,.3);--ease-in-out:cubic-bezier(.72,0,.14,1);
+}

@@ -1,0 +1,14 @@
+{
+  "count": 625,
+  "fps": 10,
+  "sampleFps": 10,
+  "width": 720,
+  "height": 1280,
+  "ext": "jpg",
+  "chapters": [
+    0,
+    0,
+    192,
+    625
+  ]
+}

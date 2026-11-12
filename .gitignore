@@ -1,0 +1,20 @@
+node_modules/
+dist/
+/BRIEFING MAIS AFETIVE/
+/arquivos/
+/frames/
+/tools/
+/torra-arquivos.zip
+/CLAUDE*.md
+/torra*.md
+*.mp4
+
+# Only the active frame sequences are part of the site.
+/public/frames/afetive-extract/
+/public/frames/afetive-mobile-extract/
+/public/frames/filme/
+/public/frames/origens/
+/public/frames/torra/
+/public/frames/sessao*/
+/public/frames/afetive-film/03[4-9][0-9].jpg
+/public/frames/afetive-film/0[4-9][0-9][0-9].jpg
