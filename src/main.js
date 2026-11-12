@@ -72,11 +72,16 @@ else {
 }
 // O conjunto mobile segue em segundo plano; nenhum frame extra pode prender a abertura.
 if (mobile) {
-  const startMobileFrames = () => loadFrames({ base: '/frames/afetive-mobile', concurrency: 6 })
-    .then((mobileFrameSet) => filmMotion.setMobileFrames(mobileFrameSet))
-    .catch((error) => console.error('Não foi possível carregar os frames mobile:', error));
+  let mobileStarted = false;
+  const startMobileFrames = () => {
+    if (mobileStarted) return;
+    mobileStarted = true;
+    loadFrames({ base: '/frames/afetive-mobile', concurrency: 6 })
+      .then((mobileFrameSet) => filmMotion.setMobileFrames(mobileFrameSet))
+      .catch((error) => console.error('Não foi possível carregar os frames mobile:', error));
+  };
   if (frameSet) startMobileFrames();
-  else frameSetPromise.then((lateFrames) => { if (lateFrames) startMobileFrames(); });
+  else { startMobileFrames(); frameSetPromise.then((lateFrames) => { if (lateFrames) startMobileFrames(); }); }
 }
 if (frameSet) await Promise.race([frameSet.coarse, timeout(mobile ? 4000 : 12000)]);
 await introLoader.done();
