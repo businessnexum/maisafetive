@@ -9,7 +9,8 @@ export function loader({ reduced }) {
   const fill = el.querySelector('.loader__fill');
   const deg = el.querySelector('.loader__deg');
   const shown = { v: 0 };
-  let want = 0;
+  // Evita que o indicador pare visualmente em 0 enquanto o primeiro arquivo baixa.
+  let want = 0.04;
   const color = gsap.utils.interpolate(ROAST);
 
   const draw = () => {
