@@ -23,6 +23,7 @@ export function film({ section, reduced, mobile }) {
   const canvas = $('.filme__canvas');
   const ctx = canvas.getContext('2d');
   const shade = $('.filme__shade');
+  const heroLine = $('.hero__line');
   const thumb = $('.hero__thumb');
   const words = [...section.querySelectorAll('.hero__word')];
   const pause = $('.hero__pause');
@@ -175,7 +176,14 @@ export function film({ section, reduced, mobile }) {
         if (edge === 'left') put(w, 'transform', `translate3d(${(full.x - r0.x + intro).toFixed(1)}px,0,0)`);
         else if (edge === 'right') put(w, 'transform', `translate3d(${(full.x + full.w - (r0.x + r0.w) + intro).toFixed(1)}px,0,0)`);
         else put(w, 'transform', `translate3d(0,${(full.y - r0.y + intro).toFixed(1)}px,0)`);
+        } else {
+        // O título fica centralizado na abertura e sai para cima ao terminar a expansão,
+        // antes de os capítulos 2 e 3 ocuparem a tela.
+        const leave = clamp((s / EXP - 0.65) / 0.25);
+        put(heroLine, 'translate', `0 ${(-H * 1.1 * leave).toFixed(1)}px`);
+        put(heroLine, 'opacity', (1 - leave).toFixed(3));
       }
+    }
     }
 
     // cap. 1: laço curto com a miniatura parada; depois o scroll manda
