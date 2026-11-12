@@ -167,8 +167,7 @@ export function film({ section, reduced, mobile }) {
     const radius = lerp(3, 0, full.e);
     put(canvas, 'clipPath', `inset(${full.y.toFixed(1)}px ${(W - full.x - full.w + cut).toFixed(1)}px ${(H - full.y - full.h).toFixed(1)}px ${(full.x + cut).toFixed(1)}px round ${radius.toFixed(1)}px)`);
 
-    // No desktop, as palavras acompanham as bordas do recorte. No mobile, o título
-    // fica centralizado em duas linhas e a animação de borda o tiraria da tela.
+    // No desktop, as palavras acompanham as bordas do recorte.
     if (!mobile) {
       for (const w of words) {
         const edge = w.dataset.edge;
@@ -176,14 +175,13 @@ export function film({ section, reduced, mobile }) {
         if (edge === 'left') put(w, 'transform', `translate3d(${(full.x - r0.x + intro).toFixed(1)}px,0,0)`);
         else if (edge === 'right') put(w, 'transform', `translate3d(${(full.x + full.w - (r0.x + r0.w) + intro).toFixed(1)}px,0,0)`);
         else put(w, 'transform', `translate3d(0,${(full.y - r0.y + intro).toFixed(1)}px,0)`);
-        } else {
-        // O título fica centralizado na abertura e sai para cima ao terminar a expansão,
-        // antes de os capítulos 2 e 3 ocuparem a tela.
-        const leave = clamp((s / EXP - 0.65) / 0.25);
-        put(heroLine, 'translate', `0 ${(-H * 1.1 * leave).toFixed(1)}px`);
-        put(heroLine, 'opacity', (1 - leave).toFixed(3));
       }
-    }
+    } else {
+      // O título fica centralizado na abertura e sai para cima ao terminar a expansão,
+      // antes de os capítulos 2 e 3 ocuparem a tela.
+      const leave = clamp((s / EXP - 0.65) / 0.25);
+      put(heroLine, 'translate', `0 ${(-H * 1.1 * leave).toFixed(1)}px`);
+      put(heroLine, 'opacity', (1 - leave).toFixed(3));
     }
 
     // cap. 1: laço curto com a miniatura parada; depois o scroll manda
