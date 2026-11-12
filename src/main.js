@@ -59,17 +59,26 @@ cursor({ reduced });
 
 const introLoader = loader({ reduced });
 const base = '/frames/afetive-film';
-const frameSet = await loadFrames({ base, concurrency: 6, onProgress: (done, count) => introLoader.set(done / count * (mobile ? 0.55 : 1)) }).catch(async () => await loadFrames({ base: '/frames/afetive-film', concurrency: 6, onProgress: (done, count) => introLoader.set(done / count * (mobile ? 0.55 : 1)) }));
-filmMotion.setFrames(frameSet);
-// O conjunto mobile tem muitos quadros. Carregue em segundo plano para que a tela
-// nunca fique presa no loader esperando essa sequência inteira.
+introLoader.set(0.04);
+const frameSetPromise = loadFrames({ base, concurrency: 6, onProgress: (done, count) => introLoader.set(done / count * (mobile ? 0.55 : 1)) })
+  .catch((error) => { console.error('Não foi possível carregar os frames do filme:', error); return null; });
+const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const frameSet = await Promise.race([frameSetPromise, timeout(8000).then(() => null)]);
+if (frameSet) filmMotion.setFrames(frameSet);
+else {
+  // Se a rede demorar, abre o site com uma imagem de apoio e aplica os frames assim que chegarem.
+  $('.filme__canvas').style.background = "center / cover no-repeat url('/img/afetive-cafe.jpg')";
+  frameSetPromise.then((lateFrames) => { if (lateFrames) filmMotion.setFrames(lateFrames); });
+}
+// O conjunto mobile segue em segundo plano; nenhum frame extra pode prender a abertura.
 if (mobile) {
-  loadFrames({ base: '/frames/afetive-mobile', concurrency: 6 })
-    .catch(() => loadFrames({ base: '/public/frames/afetive-mobile', concurrency: 6 }))
+  const startMobileFrames = () => loadFrames({ base: '/frames/afetive-mobile', concurrency: 6 })
     .then((mobileFrameSet) => filmMotion.setMobileFrames(mobileFrameSet))
     .catch((error) => console.error('Não foi possível carregar os frames mobile:', error));
+  if (frameSet) startMobileFrames();
+  else frameSetPromise.then((lateFrames) => { if (lateFrames) startMobileFrames(); });
 }
-await frameSet.coarse;
+if (frameSet) await Promise.race([frameSet.coarse, timeout(mobile ? 4000 : 12000)]);
 await introLoader.done();
 filmMotion.intro();
 if (smooth) smooth.start();
